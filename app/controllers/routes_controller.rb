@@ -1,0 +1,36 @@
+class RoutesController < ApplicationController
+  before_action :parse_json_request, only: [:update]
+
+  def show
+    @route = Route.find_by(incoming_path: params[:incoming_path])
+    return error_404 if @route.nil?
+
+    render json: @route
+  end  
+
+  def update
+    route_details = @request_data[:route]
+    incoming_path = route_details.delete(:incoming_path)
+    tries = 3
+    begin
+      @route = Route.find_or_initialize_by(incoming_path:)
+      status_code = @route.new_record? ? 201 : 200
+      @route.update(route_details) || status_code = 422
+    rescue ActiveRecord::RecordNotUnique
+      (tries -= 1).positive? ? retry : raise
+    end
+    render json: @route, status: status_code
+  end
+
+  def destroy
+    @route = Route.find_by(incoming_path: params[:incoming_path])
+    return error_404 if @route.nil?
+
+    if params[:hard_delete] == "true"
+      @route.destroy!
+    else
+      @route.soft_delete
+    end
+    render json: @route
+  end  
+end
