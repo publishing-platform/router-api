@@ -5,15 +5,15 @@ default: &default
 
 development:
   <<: *default
-  database: router_api_development
+  database: router_development
   url: <%= ENV["DATABASE_URL"]%>
 
 test:
   <<: *default
-  database: router_api_test
+  database: router_test
   url: <%= ENV["TEST_DATABASE_URL"] %>
 
 production:
   <<: *default
-  database: router_api
+  database: router
   url: <%= ENV["DATABASE_URL"]%>
