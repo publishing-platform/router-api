@@ -1,2 +1,3 @@
-# router-api
-API for updating the routes used by the router on the Publishing Platform
+# Router API
+Router API provides an API for updating the routes used by
+[Router](https://github.com/publishing-platform/router).
