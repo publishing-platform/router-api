@@ -3,25 +3,25 @@ class Route < ApplicationRecord
 
   validates :incoming_path, uniqueness: true
   validate :validate_incoming_path
-  validates :route_type, inclusion: { in: %w[prefix exact] } 
-  validates :handler, inclusion: { in: HANDLERS } 
+  validates :route_type, inclusion: { in: %w[prefix exact] }
+  validates :handler, inclusion: { in: HANDLERS }
 
   with_options if: :backend? do
     validates :backend_id, presence: true
     validate :validate_backend_id
-  end  
+  end
 
   with_options if: :redirect? do
     validates :redirect_to, presence: true
     validate :validate_redirect_to
     validates :redirect_type, inclusion: { in: %w[permanent temporary] }
     validates :segments_mode, inclusion: { in: %w[ignore preserve] }
-  end  
+  end
 
-  before_validation :default_segments_mode  
+  before_validation :default_segments_mode
   after_create :cleanup_child_gone_routes
 
-  scope :prefix, -> { where(route_type: "prefix") }  
+  scope :prefix, -> { where(route_type: "prefix") }
 
   HANDLERS.each do |handler|
     scope handler, -> { where(handler:) }
@@ -29,7 +29,7 @@ class Route < ApplicationRecord
     define_method "#{handler}?" do
       self.handler == handler
     end
-  end  
+  end
 
   def as_json(options = {})
     options[:except] ||= %i[id created_at updated_at]
@@ -37,7 +37,7 @@ class Route < ApplicationRecord
       h.delete_if { |_k, v| v.nil? }
       h["errors"] = errors.as_json if errors.any?
     end
-  end  
+  end
 
   def soft_delete
     if has_parent_prefix_routes?
@@ -45,7 +45,7 @@ class Route < ApplicationRecord
     else
       update!(handler: "gone", backend_id: nil, redirect_to: nil, redirect_type: nil)
     end
-  end  
+  end
 
   def has_parent_prefix_routes?
     segments = incoming_path.split("/").reject(&:blank?).tap(&:pop)
@@ -55,31 +55,31 @@ class Route < ApplicationRecord
       segments.pop
     end
     Route.excluding(self).prefix.where(incoming_path: "/").any?
-  end  
+  end
 
   def default_segments_mode
     return unless redirect?
 
     self.segments_mode ||= route_type == "prefix" ? "preserve" : "ignore"
-  end  
+  end
 
 private
 
   def validate_incoming_path
     errors.add(:incoming_path, "must start with /") unless
-      incoming_path.starts_with?("/")    
+      incoming_path.starts_with?("/")
 
-    uri = URI.parse(incoming_path)      
+    uri = URI.parse(incoming_path)
 
     errors.add(:incoming_path, "cannot end with /") if
       uri.path != "/" && uri.path.end_with?("/")
-      
-    errors.add(:incoming_path, "cannot contain //") if uri.path.match?(%r{//})      
+
+    errors.add(:incoming_path, "cannot contain //") if uri.path.match?(%r{//})
 
     errors.add(:incoming_path, "does not equal the URI path") unless
-      uri.path == incoming_path    
+      uri.path == incoming_path
   rescue URI::InvalidURIError
-    errors.add(:incoming_path, "is an invalid URI")      
+    errors.add(:incoming_path, "is an invalid URI")
   end
 
   def validate_redirect_to
@@ -105,7 +105,7 @@ private
     end
   rescue URI::InvalidURIError
     errors.add(:redirect_to, "is an invalid URI")
-  end  
+  end
 
   def validate_backend_id
     return if backend_id.blank? # handled by presence validation
@@ -113,11 +113,11 @@ private
     unless Backend.where(backend_id:).exists?
       errors.add(:backend_id, "does not exist")
     end
-  end  
+  end
 
   def cleanup_child_gone_routes
     return unless route_type == "prefix"
 
     Route.excluding(self).gone.where("incoming_path SIMILAR TO ?", "#{Regexp.escape(incoming_path)}/%").destroy_all
-  end  
+  end
 end

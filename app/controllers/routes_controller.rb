@@ -6,7 +6,7 @@ class RoutesController < ApplicationController
     return error_404 if @route.nil?
 
     render json: @route
-  end  
+  end
 
   def update
     route_details = @request_data[:route]
@@ -32,5 +32,5 @@ class RoutesController < ApplicationController
       @route.soft_delete
     end
     render json: @route
-  end  
+  end
 end

@@ -9,7 +9,7 @@ class CreateRoutes < ActiveRecord::Migration[7.1]
       t.string  :redirect_to
       t.string  :redirect_type
       t.string  :segments_mode
-      
+
       t.timestamps
     end
 

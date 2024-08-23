@@ -3,7 +3,7 @@ class CreateBackends < ActiveRecord::Migration[7.1]
     create_table :backends do |t|
       t.string :backend_id
       t.string :backend_url
-      
+
       t.timestamps
     end
 

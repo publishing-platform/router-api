@@ -2,7 +2,7 @@ class Backend < ApplicationRecord
   validates :backend_id, presence: true, uniqueness: true, format: { with: /\A[a-z0-9-]*\z/ }
   validate :validate_backend_url
 
-  before_destroy :ensure_no_linked_routes  
+  before_destroy :ensure_no_linked_routes
 
   def as_json(options = {})
     options[:except] ||= %i[id created_at updated_at]
@@ -10,7 +10,7 @@ class Backend < ApplicationRecord
       h["errors"] = errors.as_json if errors.any?
     end
   end
-    
+
 private
 
   def validate_backend_url
@@ -26,12 +26,12 @@ private
       uri.fragment.blank?
   rescue URI::InvalidURIError
     false
-  end  
+  end
 
   def ensure_no_linked_routes
     if Route.backend.where(backend_id:).any?
       errors.add(:base, "Backend has routes - can't delete")
       throw :abort
     end
-  end  
+  end
 end
