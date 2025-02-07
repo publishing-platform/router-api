@@ -10,17 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_21_120306) do
+ActiveRecord::Schema[7.2].define(version: 2024_08_21_101135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "backends", force: :cascade do |t|
-    t.string "backend_id"
-    t.string "backend_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["backend_id"], name: "index_backends_on_backend_id", unique: true
-  end
 
   create_table "routes", force: :cascade do |t|
     t.string "incoming_path"
@@ -48,5 +40,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_21_120306) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
 end

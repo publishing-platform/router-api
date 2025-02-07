@@ -119,17 +119,6 @@ RSpec.describe Route, type: :model do
           expect(route).not_to be_valid
           expect(route.errors[:backend_id].size).to eq(1)
         end
-
-        it "maps to an existing backend" do
-          FactoryBot.create(:backend, backend_id: "foo")
-
-          route.backend_id = "foo"
-          expect(route).to be_valid
-
-          route.backend_id = "bar"
-          expect(route).not_to be_valid
-          expect(route.errors[:backend_id].size).to eq(1)
-        end
       end
     end
 

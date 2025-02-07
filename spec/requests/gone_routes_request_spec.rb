@@ -5,7 +5,6 @@ RSpec.describe "auto creation and deletion of gone routes", type: :request do
 
   describe "soft-deleting a route" do
     before do
-      FactoryBot.create(:backend, backend_id: "a-backend")
       FactoryBot.create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
     end
 
@@ -42,7 +41,6 @@ RSpec.describe "auto creation and deletion of gone routes", type: :request do
 
   describe "cleaning up gone routes on prefix route creation" do
     before do
-      FactoryBot.create(:backend, backend_id: "a-backend")
       FactoryBot.create(:gone_route, incoming_path: "/foo/bar", route_type: "exact")
     end
 

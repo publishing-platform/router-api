@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
+  get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
+  
   with_options format: false do
-    resources :backends, only: %i[show update destroy]
-
     get "/routes" => "routes#show"
     put "/routes" => "routes#update"
     delete "/routes" => "routes#destroy"

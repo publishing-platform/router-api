@@ -8,7 +8,6 @@ class Route < ApplicationRecord
 
   with_options if: :backend? do
     validates :backend_id, presence: true
-    validate :validate_backend_id
   end
 
   with_options if: :redirect? do
@@ -106,14 +105,6 @@ private
     end
   rescue URI::InvalidURIError
     errors.add(:redirect_to, "is an invalid URI")
-  end
-
-  def validate_backend_id
-    return if backend_id.blank? # handled by presence validation
-
-    unless Backend.where(backend_id:).exists?
-      errors.add(:backend_id, "does not exist")
-    end
   end
 
   def remove_backend_id_for_non_backend_routes

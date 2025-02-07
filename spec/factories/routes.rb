@@ -8,7 +8,7 @@ FactoryBot.define do
 
     factory :backend_route do
       handler       { "backend" }
-      backend_id    { (Backend.first || create(:backend)).backend_id }
+      sequence(:backend_id) { |n| "backend-#{n}" }
     end
 
     factory :redirect_route do
