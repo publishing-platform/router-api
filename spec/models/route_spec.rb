@@ -73,14 +73,14 @@ RSpec.describe Route, type: :model do
 
       describe "uniqueness" do
         it "is unique" do
-          FactoryBot.create(:route, incoming_path: "/foo")
+          create(:route, incoming_path: "/foo")
           route.incoming_path = "/foo"
           expect(route).not_to be_valid
           expect(route.errors[:incoming_path].size).to eq(1)
         end
 
         it "has a db level uniqueness constraint" do
-          FactoryBot.create(:route, incoming_path: "/foo")
+          create(:route, incoming_path: "/foo")
           route.incoming_path = "/foo"
 
           expect {
@@ -145,27 +145,27 @@ RSpec.describe Route, type: :model do
         end
 
         context "with an exact route" do
-          subject(:route) { FactoryBot.create(:redirect_route, route_type: "exact") }
+          subject(:route) { create(:redirect_route, route_type: "exact") }
 
           it "defaults to ignore" do
             expect(route.segments_mode).to eq "ignore"
           end
 
           it "is not overriden" do
-            route = FactoryBot.create(:redirect_route, route_type: "exact", segments_mode: "preserve")
+            route = create(:redirect_route, route_type: "exact", segments_mode: "preserve")
             expect(route.segments_mode).to eq "preserve"
           end
         end
 
         context "with an prefix route" do
-          subject(:route) { FactoryBot.create(:redirect_route, route_type: "prefix") }
+          subject(:route) { create(:redirect_route, route_type: "prefix") }
 
           it "defaults to preserve" do
             expect(route.segments_mode).to eq "preserve"
           end
 
           it "is not overriden" do
-            route = FactoryBot.create(:redirect_route, route_type: "prefix", segments_mode: "ignore")
+            route = create(:redirect_route, route_type: "prefix", segments_mode: "ignore")
             expect(route.segments_mode).to eq "ignore"
           end
         end
@@ -246,7 +246,7 @@ RSpec.describe Route, type: :model do
 
   describe "changing backend route to redirect route" do
     it "clears the backend_id" do
-      route = FactoryBot.create(:backend_route)
+      route = create(:backend_route)
       route.update!(
         handler: "redirect",
         redirect_to: "/",
@@ -283,24 +283,24 @@ RSpec.describe Route, type: :model do
   end
 
   describe "has_parent_prefix_routes?" do
-    subject(:route) { FactoryBot.create(:route, incoming_path: "/foo/bar") }
+    subject(:route) { create(:route, incoming_path: "/foo/bar") }
 
     it "is false with no parents" do
       expect(route).not_to have_parent_prefix_routes
     end
 
     it "is true with a parent prefix route" do
-      FactoryBot.create(:route, incoming_path: "/foo", route_type: "prefix")
+      create(:route, incoming_path: "/foo", route_type: "prefix")
       expect(route).to have_parent_prefix_routes
     end
 
     it "is false with a parent exact route" do
-      FactoryBot.create(:route, incoming_path: "/foo", route_type: "exact")
+      create(:route, incoming_path: "/foo", route_type: "exact")
       expect(route).not_to have_parent_prefix_routes
     end
 
     it "is true with a prefix route at /" do
-      FactoryBot.create(:route, incoming_path: "/", route_type: "prefix")
+      create(:route, incoming_path: "/", route_type: "prefix")
       expect(route).to have_parent_prefix_routes
     end
 
@@ -311,7 +311,7 @@ RSpec.describe Route, type: :model do
   end
 
   describe "soft_delete" do
-    subject(:route) { FactoryBot.create(:backend_route) }
+    subject(:route) { create(:backend_route) }
 
     it "destroys the route if it has a parent prefix route" do
       allow(route).to receive(:has_parent_prefix_routes?).and_return(true) # rubocop:disable RSpec/SubjectStub
@@ -333,7 +333,7 @@ RSpec.describe Route, type: :model do
 
   describe "cleaning child gone routes after create" do
     it "deletes a child gone route after creating a route" do
-      child = FactoryBot.create(:gone_route, incoming_path: "/foo/bar/baz")
+      child = create(:gone_route, incoming_path: "/foo/bar/baz")
       new_route = described_class.new(FactoryBot.attributes_for(:redirect_route, incoming_path: "/foo", route_type: "prefix"))
       new_route.save!
 
@@ -342,7 +342,7 @@ RSpec.describe Route, type: :model do
     end
 
     it "does not delete anything if the creation fails" do
-      child = FactoryBot.create(:gone_route, incoming_path: "/foo/bar/baz")
+      child = create(:gone_route, incoming_path: "/foo/bar/baz")
       new_route = described_class.new(FactoryBot.attributes_for(:redirect_route, incoming_path: "/foo", route_type: "prefix", redirect_to: "not a url"))
       expect(new_route.save).to be_falsey
 
@@ -351,7 +351,7 @@ RSpec.describe Route, type: :model do
     end
 
     it "does not delete anything if the created route is an exact route" do
-      child = FactoryBot.create(:gone_route, incoming_path: "/foo/bar/baz")
+      child = create(:gone_route, incoming_path: "/foo/bar/baz")
       new_route = described_class.new(FactoryBot.attributes_for(:redirect_route, incoming_path: "/foo", route_type: "exact"))
       new_route.save!
 
@@ -360,7 +360,7 @@ RSpec.describe Route, type: :model do
     end
 
     it "does not delete a child route that's not a gone route" do
-      child = FactoryBot.create(:redirect_route, incoming_path: "/foo/bar/baz")
+      child = create(:redirect_route, incoming_path: "/foo/bar/baz")
       new_route = described_class.new(FactoryBot.attributes_for(:redirect_route, incoming_path: "/foo", route_type: "prefix"))
       new_route.save!
 
@@ -369,8 +369,8 @@ RSpec.describe Route, type: :model do
     end
 
     it "does not delete a route that's not a child" do
-      child1 = FactoryBot.create(:redirect_route, incoming_path: "/bar/baz")
-      child2 = FactoryBot.create(:redirect_route, incoming_path: "/foo/barbaz")
+      child1 = create(:redirect_route, incoming_path: "/bar/baz")
+      child2 = create(:redirect_route, incoming_path: "/foo/barbaz")
       new_route = described_class.new(FactoryBot.attributes_for(:redirect_route, incoming_path: "/foo/bar", route_type: "prefix"))
       new_route.save!
 

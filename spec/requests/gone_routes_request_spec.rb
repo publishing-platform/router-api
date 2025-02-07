@@ -5,7 +5,7 @@ RSpec.describe "auto creation and deletion of gone routes", type: :request do
 
   describe "soft-deleting a route" do
     before do
-      FactoryBot.create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
+      create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
     end
 
     it "converts it into a 'gone' route" do
@@ -29,7 +29,7 @@ RSpec.describe "auto creation and deletion of gone routes", type: :request do
     end
 
     it "fullies delete it if it has a parent prefix route" do
-      FactoryBot.create(:backend_route, incoming_path: "/foo", route_type: "prefix")
+      create(:backend_route, incoming_path: "/foo", route_type: "prefix")
       delete "/routes", params: { incoming_path: "/foo/bar" }
 
       expect(response.code.to_i).to eq(200)
@@ -41,7 +41,7 @@ RSpec.describe "auto creation and deletion of gone routes", type: :request do
 
   describe "cleaning up gone routes on prefix route creation" do
     before do
-      FactoryBot.create(:gone_route, incoming_path: "/foo/bar", route_type: "exact")
+      create(:gone_route, incoming_path: "/foo/bar", route_type: "exact")
     end
 
     it "deletes a gone route when a parent prefix route is created" do

@@ -5,7 +5,7 @@ RSpec.describe "managing routes", type: :request do
 
   describe "fetching details of a route" do
     before do
-      FactoryBot.create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
+      create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
     end
 
     it "returns details of the route in JSON format" do
@@ -68,7 +68,7 @@ RSpec.describe "managing routes", type: :request do
 
   describe "updating a route" do
     before do
-      @route = FactoryBot.create(:backend_route, incoming_path: "/foo/bar", route_type: "prefix", backend_id: "a-backend")
+      @route = create(:backend_route, incoming_path: "/foo/bar", route_type: "prefix", backend_id: "a-backend")
     end
 
     it "updates the route" do
@@ -120,7 +120,7 @@ RSpec.describe "managing routes", type: :request do
 
   describe "deleting a route" do
     before do
-      FactoryBot.create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
+      create(:backend_route, incoming_path: "/foo/bar", route_type: "exact", backend_id: "a-backend")
     end
 
     it "deletes the route" do
