@@ -4,9 +4,8 @@ gem "rails", "7.2.2"
 
 gem "bootsnap", require: false
 gem "pg", "~> 1.5"
-gem "publishing_platform_app_config"
+gem "publishing_platform_app_config", "0.3.0"
 gem "publishing_platform_sso"
-gem "puma", ">= 5.0"
 gem "tzinfo-data", platforms: %i[mswin mswin64 mingw x64_mingw jruby]
 
 group :development, :test do
