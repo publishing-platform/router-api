@@ -19,6 +19,7 @@ class Route < ApplicationRecord
   end
 
   before_validation :default_segments_mode
+  before_save :remove_backend_id_for_non_backend_routes
   after_create :cleanup_child_gone_routes
 
   scope :prefix, -> { where(route_type: "prefix") }
@@ -113,6 +114,10 @@ private
     unless Backend.where(backend_id:).exists?
       errors.add(:backend_id, "does not exist")
     end
+  end
+
+  def remove_backend_id_for_non_backend_routes
+    self.backend_id = nil unless backend?
   end
 
   def cleanup_child_gone_routes
