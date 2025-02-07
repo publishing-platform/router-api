@@ -7,7 +7,7 @@ FactoryBot.define do
     handler                   { "gone" }
 
     factory :backend_route do
-      handler       { "backend" }
+      handler { "backend" }
       sequence(:backend_id) { |n| "backend-#{n}" }
     end
 
