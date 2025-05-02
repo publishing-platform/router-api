@@ -206,7 +206,7 @@ RSpec.describe Route, type: :model do
 
       describe "backend_id" do
         it "is set to nil" do
-          expect(route.backend_id).to be nil
+          expect(route.backend_id).to be_nil
         end
       end
 
@@ -254,7 +254,7 @@ RSpec.describe Route, type: :model do
       )
       route.reload
 
-      expect(route.backend_id).to be nil
+      expect(route.backend_id).to be_nil
     end
   end
 
