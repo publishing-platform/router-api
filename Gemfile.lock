@@ -381,7 +381,7 @@ DEPENDENCIES
   debug
   factory_bot_rails
   pg (~> 1.5)
-  publishing_platform_app_config (= 0.3.0)
+  publishing_platform_app_config
   publishing_platform_rubocop
   publishing_platform_sso
   publishing_platform_test
