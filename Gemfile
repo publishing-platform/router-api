@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "8.0.2"
 
 gem "bootsnap", require: false
-gem "pg", "~> 1.5"
+gem "pg", "~> 1.6"
 gem "publishing_platform_app_config"
 gem "publishing_platform_sso"
 gem "tzinfo-data", platforms: %i[mswin mswin64 mingw x64_mingw jruby]
