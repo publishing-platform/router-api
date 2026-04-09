@@ -72,7 +72,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.9)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
     base64 (0.3.0)
@@ -220,7 +220,7 @@ GEM
       rails (>= 7)
       warden (~> 1.2)
       warden-oauth2 (~> 0.0.1)
-    publishing_platform_test (0.2.0)
+    publishing_platform_test (0.2.1)
       brakeman (>= 5.0.2)
       capybara (>= 3.36)
       puma
@@ -275,7 +275,7 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
-    regexp_parser (2.11.3)
+    regexp_parser (2.12.0)
     reline (0.6.3)
       io-console (~> 0.5)
     rexml (3.4.4)
