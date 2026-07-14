@@ -203,7 +203,7 @@ GEM
     prettyprint (0.2.0)
     prism (1.9.0)
     public_suffix (7.0.5)
-    publishing_platform_app_config (0.5.2)
+    publishing_platform_app_config (0.5.3)
       puma (>= 5.6, < 8.0)
       sentry-rails (>= 5.3, < 7.0)
       sentry-ruby (~> 5.3)
