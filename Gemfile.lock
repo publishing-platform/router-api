@@ -214,7 +214,7 @@ GEM
       rubocop-rails (= 2.36.0)
       rubocop-rake (= 0.7.1)
       rubocop-rspec (= 3.10.2)
-    publishing_platform_sso (0.6.7)
+    publishing_platform_sso (0.6.8)
       oauth2 (~> 2.0)
       omniauth (~> 2.1)
       omniauth-oauth2 (~> 1.8)
